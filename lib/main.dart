@@ -15,6 +15,7 @@ import 'asset_view.dart';
 import 'custom_catalog.dart';
 import 'samples_view.dart';
 import 'server_view.dart';
+import 'sse_server_view.dart';
 
 void main(List<String> args) {
   final parser = ArgParser()
@@ -87,7 +88,7 @@ class _CatalogGalleryAppState extends State<CatalogGalleryApp> {
       ),
       home: Builder(
         builder: (context) {
-          final int tabCount = 3 + (showSamples ? 1 : 0);
+          final int tabCount = 4 + (showSamples ? 1 : 0);
           return DefaultTabController(
             length: tabCount,
             child: Scaffold(
@@ -109,6 +110,7 @@ class _CatalogGalleryAppState extends State<CatalogGalleryApp> {
                     const Tab(text: 'Catalog'),
                     const Tab(text: 'Assets'),
                     const Tab(text: 'Server'),
+                    const Tab(text: 'SSE'),
                     if (showSamples) const Tab(text: 'Samples'),
                   ],
                 ),
@@ -133,6 +135,10 @@ class _CatalogGalleryAppState extends State<CatalogGalleryApp> {
                     serverUrl: _serverUrl,
                   ),
                   ServerView(
+                    catalog: catalog,
+                    serverUrl: _serverUrl,
+                  ),
+                  SseServerView(
                     catalog: catalog,
                     serverUrl: _serverUrl,
                   ),

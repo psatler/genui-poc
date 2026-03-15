@@ -5,10 +5,10 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:genui/genui.dart';
-import 'package:http/http.dart' as http;
 
 class AssetView extends StatefulWidget {
   const AssetView({
@@ -26,6 +26,7 @@ class AssetView extends StatefulWidget {
 
 class _AssetViewState extends State<AssetView> {
   late SurfaceController _surfaceController;
+  late Dio _dio;
   final List<String> _surfaceIds = [];
   int _currentSurfaceIndex = 0;
   StreamSubscription<SurfaceUpdate>? _surfaceSubscription;
@@ -36,6 +37,7 @@ class _AssetViewState extends State<AssetView> {
   @override
   void initState() {
     super.initState();
+    _dio = Dio(BaseOptions(baseUrl: widget.serverUrl));
     _surfaceController = SurfaceController(catalogs: [widget.catalog]);
     _setupSurfaceListener();
     _setupActionListener();
@@ -47,6 +49,7 @@ class _AssetViewState extends State<AssetView> {
     _surfaceSubscription?.cancel();
     _actionSubscription?.cancel();
     _surfaceController.dispose();
+    _dio.close();
     super.dispose();
   }
 
@@ -99,16 +102,12 @@ class _AssetViewState extends State<AssetView> {
 
   Future<void> _postAction(Map<String, dynamic> action) async {
     try {
-      final response = await http.post(
-        Uri.parse('${widget.serverUrl}/api/action'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(action),
+      final response = await _dio.post<List<dynamic>>(
+        '/api/action',
+        data: action,
       );
-
-      if (response.statusCode == 200) {
-        final List<dynamic> messages =
-            jsonDecode(response.body) as List<dynamic>;
-        for (final msg in messages) {
+      if (response.data != null) {
+        for (final msg in response.data!) {
           _surfaceController.handleMessage(
             A2uiMessage.fromJson(msg as Map<String, dynamic>),
           );
