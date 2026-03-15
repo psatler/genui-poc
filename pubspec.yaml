@@ -1,0 +1,39 @@
+# Copyright 2025 The Flutter Authors.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+name: catalog_gallery
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.9.2 <4.0.0"
+  flutter: ">=3.35.7 <4.0.0"
+
+# resolution: workspace
+
+dependencies:
+  args: ^2.7.0
+  file: ^7.0.1
+  flutter:
+    sdk: flutter
+  genui: # A2UI protocol v0.9
+    git:
+      url: https://github.com/flutter/genui.git
+      ref: 018ab029f5909fbe03e82358da8958dee1f8e463
+      path: packages/genui
+  http: ^1.6.0
+  json_schema_builder: ^0.1.3 # pub.dev (v0.8 compatible)
+  yaml: ^3.1.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  logging: ^1.3.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/

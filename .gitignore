@@ -1,0 +1,17 @@
+# Flutter
+build/
+.dart_tool/
+.packages
+
+# FVM Version Cache
+.fvm/
+
+# IDE
+.idea/
+*.iml
+
+# Node (backend)
+backend/node_modules/
+
+# OS
+.DS_Store
